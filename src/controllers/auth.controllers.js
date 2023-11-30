@@ -50,7 +50,7 @@ export const login = async (req, res) => {
                 updateAt: user.updatedAt
             })
         }
-        res.status(403).json({message: 'Invalid credentials'})
+        res.status(401).json({message: 'Invalid credentials'})
 
     }catch(error){
         res.status(500).json({message: error.message})
@@ -60,4 +60,10 @@ export const login = async (req, res) => {
 export const logout = (req, res) => {
     res.clearCookie('jwtCookie')
     res.sendStatus(200)
+}
+
+export const profile = async (req, res) => {
+    const user = await userModel.findById(req.user.payload._id)
+    if(!user) return res.status(401).json({message: 'User not found.'})
+    return res.status(200).json({message: user})
 }
