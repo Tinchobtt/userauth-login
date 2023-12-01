@@ -25,7 +25,7 @@ export const register = async (req, res) => {
         res.status(400).json({message: 'Error trying to create the User'})
 
     }catch(error){
-        res.status(500).json({message: error})
+        res.status(500).json({message: error.message})
     }
 }
 
