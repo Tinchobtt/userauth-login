@@ -15,7 +15,7 @@ export const getTasks = async (req, res) => {
 export const getTask = async (req, res) => {
     const id = req.params.id
     try{
-        const task = await taskModel.findById(id);
+        const task = await taskModel.findById(id).populate('user');
         if(!task){
             return res.status(404).json({message: 'Task not found.'})
         }
