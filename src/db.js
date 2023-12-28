@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 export const connectDB = async () =>{
     try{
-        await mongoose.connect('mongodb://localhost:27017/merndb');
+        await mongoose.connect('mongodb://127.0.0.1/merndb');
         console.log('DB Connected.')
     }catch(error){
         console.log(error)

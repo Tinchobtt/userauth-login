@@ -4,8 +4,10 @@ import { generateToken } from "../utils/jwt.js"
 
 export const register = async (req, res) => {
     const {username, email, password} = req.body
-    
     try{
+        const user = await userModel.findOne({email})
+        if(user) return res.status(400).json({message: 'The email already exists.'})
+
         const passwordHash = createHash(password)
         const newUser = new userModel({username, email, password: passwordHash})
         const userSaved = await newUser.save() //Haciendo el guardado de esta forma, si hay algun error obtendremos un error mas detallado en el catch
