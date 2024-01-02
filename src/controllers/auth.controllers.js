@@ -1,6 +1,8 @@
+import 'dotenv/config'
 import { userModel } from "../models/user.model.js"
 import { createHash, validatePassword } from "../utils/bcrypt.js"
 import { generateToken } from "../utils/jwt.js"
+import Jwt from "jsonwebtoken"
 
 export const register = async (req, res) => {
     const {username, email, password} = req.body
@@ -43,8 +45,8 @@ export const login = async (req, res) => {
 
         if(isMatch){
             const token = await generateToken(user)
-            res.cookie('jwtCookie', token, { maxAge: 43200000  })
-            return res.json({
+            res.cookie('jwtCookie', token, { maxAge: 43200000 })
+            return res.status(200).json({
                 id: user._id,
                 username: user.username,
                 email: user.email,
@@ -62,6 +64,21 @@ export const login = async (req, res) => {
 export const logout = (req, res) => {
     res.clearCookie('jwtCookie')
     res.sendStatus(200)
+}
+
+export const verifyToken = async (req, res) => {
+    const { jwtCookie } = req.cookies
+
+    if(!jwtCookie) return res.status(401).json({message: 'Unauthorized'})
+
+    Jwt.verify(jwtCookie, process.env.JWT_SECRET, async (err, credentials) => {
+        if(err) return res.status(401).json({message: 'Unauthorized.'})
+        
+        const user = await userModel.findById(credentials.payload._id)
+        if(!user) return res.status(401).json({message: 'Unauthorized.'})
+
+        return res.status(200).json({message: user})
+    })
 }
 
 export const profile = async (req, res) => {

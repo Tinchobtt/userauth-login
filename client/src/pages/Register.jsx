@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { useAuth } from '../context/AuthContext.jsx'
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 const Register = () => {
     const { register, handleSubmit, formState: { errors } } = useForm()
@@ -15,8 +15,8 @@ const Register = () => {
     const onSubmit = handleSubmit(async user => {
         signup(user)
     })
-    console.log(registerErrors);
-  return (
+
+    return (
     <div className="flex items-center justify-center h-screen">
         <div className='bg-zinc-800 max-w-md p-10 rounded-md'>
             <form onSubmit={onSubmit} >
@@ -49,8 +49,11 @@ const Register = () => {
                     )
                 )}
                 </ul>
-                <button type='submit' className='px-3 py-2 rounded mt-5 bg-sky-600'>Register</button>
+                <button type='submit' className='px-3 py-2 rounded mt-5 bg-sky-600'>Sing up</button>
             </form>
+            <p className="flex gap-x-2 justify-start mt-4">
+                Already have an account? <Link to='/login' className="text-sky-500">Sing in</Link>
+            </p>
         </div>
     </div>
   )

@@ -1,14 +1,14 @@
 import { useForm } from "react-hook-form"
 import { useAuth } from "../context/AuthContext"
+import { Link } from "react-router-dom"
 
 const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm()
   const {signin, errors: loginErrors} = useAuth()
   const onSubmit = handleSubmit(async user => {
-    signin(user)
+      signin(user)
   })
-
-  console.log(loginErrors);
+  
   return (
     <div className="flex items-center justify-center h-screen">
       <div className='bg-zinc-800 max-w-md p-10 rounded-md'>
@@ -36,8 +36,11 @@ const Login = () => {
                     )
                 )}
                 </ul>
-            <button type='submit' className='px-3 py-2 rounded mt-5 bg-sky-600'>Register</button>
+            <button type='submit' className='px-3 py-2 rounded mt-5 bg-sky-600'>Sing in</button>
         </form>
+        <p className="flex gap-x-2 justify-start mt-4">
+          Don´t have an account? <Link to='/register' className="text-sky-500">Sing up</Link>
+        </p>
       </div>
     </div>
   )
