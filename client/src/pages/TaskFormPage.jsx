@@ -1,10 +1,16 @@
 import { useForm } from 'react-hook-form'
+import { useTasks } from '../context/TaskContext'
+
+
 const TaskFormPage = () => {
     const {register, handleSubmit} = useForm()
 
+    const { createTask } = useTasks()
+
     const onSubmit = handleSubmit((data) => {
-        console.log(data)
+        createTask(data)
     })
+
     return (
         <div className="flex items-center justify-center h-screen">
             <div className='bg-zinc-800 max-w-md w-full p-10 rounded-md'>

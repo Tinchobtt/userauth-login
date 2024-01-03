@@ -2,7 +2,7 @@ import { taskModel } from "../models/task.model.js"
 
 export const getTasks = async (req, res) => {
     try{
-        const tasks = await taskModel.find()
+        const tasks = await taskModel.find({user: req.user.payload._id})
         if(!tasks){
             return res.status(404).json({message: 'Tasks not found.'})
         }

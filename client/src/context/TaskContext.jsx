@@ -1,18 +1,43 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from "react";
+import { createTaskRequest, getTasksRequest } from '../api/task.js'
 
-const TaskContext = createContext()
+export const TaskContext = createContext()
 
-const useTask = () => {
+export const useTasks = () => {
     const context = useContext(TaskContext)
-
+    
     if(!context) throw new Error("useTask must be used within an TaskProvider")
     return context
 }
-const TaskProvider = ({children}) => {
-    return(
-        <TaskContext.Provider value={{
 
-        }}>
+const TaskProvider = ({children}) => {
+    const [tasks, setTasks] = useState([])
+    
+    const getTasks = async () => {
+        try{
+            const res = await getTasksRequest()
+            setTasks(res.data.message)
+            console.log(res);
+        }catch(error){
+            console.log(error);
+        }
+    }
+
+    const createTask = async (task) => {
+        try{
+            await createTaskRequest(task)
+        }catch(error){
+            console.log(error);
+        }
+    } 
+
+    return(
+        <TaskContext.Provider 
+            value={{
+                tasks,
+                createTask,
+                getTasks
+            }}>
             {children}
         </TaskContext.Provider>
     )
